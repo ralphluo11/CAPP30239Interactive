@@ -13,7 +13,7 @@ Python for data process and fit a simple model to export coefficients
 
 Examples:
 NYT “You Draw It” interactives
-//www.nytimes.com/interactive/2015/05/28/upshot/you-draw-it-how-family-income-affects-childrens-college-chances.html
+www.nytimes.com/interactive/2015/05/28/upshot/you-draw-it-how-family-income-affects-childrens-college-chances.html
 
 FlowingData – “A Day in the Life of Americans.
 https://flowingdata.com/2015/12/15/a-day-in-the-life-of-americans/
