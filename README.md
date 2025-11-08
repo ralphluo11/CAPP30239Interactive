@@ -4,7 +4,7 @@
 
 I will build a Democracy Trajectory Simulator: an interactive, simulation-driven visualization that lets users explore “what-if” scenarios for a country’s democracy level over the next 10 years. Users can set assumptions about GDP per-capita growth, inequality changes, and the probability of shocks like war, then run the simulation to see a fan chart (quantiles) and compare trajectories against peer groups (neighbors, income peers). The goal is to help audiences reason about plausible ranges to connect economic and institutional assumptions to potential democratic trajectories.
 
-## Technical Plan re: Option A/B/C/D
+## Technical Plan
 
 Path: Option A : The core experience is a single, centerpiece simulation with lots of options. 
 
