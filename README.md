@@ -22,12 +22,7 @@ https://flowingdata.com/2015/12/15/a-day-in-the-life-of-americans/
 
 ## Mockup
 
-{
-At least one image file with a mock-up of what you're considering.
-If multiple images help make the intent clear, please include more.
-This can be a quick pen & paper sketch of your current idea, or you can use Inkscape/any tool you wish.
-A rough sense of what will be shown and how the user will interact with it should be clear from your illustration(s).
-}
+<img width="1126" height="582" alt="image" src="https://github.com/user-attachments/assets/d9f6efb1-488b-4dfa-908f-54a68eb196e4" />
 
 ## Data Sources
 
