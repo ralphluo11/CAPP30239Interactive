@@ -1,0 +1,344 @@
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8"> 
+  <!-- D3 -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body>
+  <header>
+    <h1>Democracy Trajectory Simulator</h1>
+    <p class="sub">
+      Explore “what-if” scenarios for V-Dem’s liberal democracy index
+      under different growth and inequality assumptions.
+    </p>
+  </header>
+
+    <!-- factors -->
+  <section class="controls">
+    <label>
+      Country
+      <select id="country"></select>
+    </label>
+
+    <label>
+      GDP growth (% / year)
+      <input id="gdp" type="range" min="-3" max="8" step="0.5" value="2" />
+      <span id="gdpVal">2.0%</span>
+    </label>
+
+    <label>
+      Equality change (Δeq)
+      <input id="ineq" type="range" min="-0.03" max="0.03" step="0.005" value="0" />
+      <span id="ineqVal">0.000</span>
+    </label>
+
+    <label>
+    Rule of law change (Δrule)
+    <input id="rule" type="range" min="-0.05" max="0.05" step="0.005" value="0" />
+    <span id="ruleVal">0.000</span>
+    </label>
+
+    <label>
+    Freedom of expression change (Δpoly)
+    <input id="poly" type="range" min="-0.05" max="0.05" step="0.005" value="0" />
+    <span id="polyVal">0.000</span>
+    </label>
+
+    <button id="run">Run simulation</button>
+  </section>
+
+  <!-- chart -->
+  <section class="chart-wrap">
+    <svg id="chart" width="920" height="400"
+         role="img"
+         aria-label="Fan chart of simulated democracy index"></svg>
+    <div class="legend">
+      <span class="band90">10–90% interval</span>
+      <span class="band50">25–75% interval</span>
+      <span class="median">Median path</span>
+    </div>
+  </section>
+
+<!-- methods -->
+<section class="methods">
+  <h2>How this prototype works</h2>
+  <p>
+    We estimate a simple dynamic panel model on V-Dem data:
+    <code>
+      libdem_t = α + ρ·libdem_{t-1}
+      + β_gdp·gdp_growth_t
+      + β_eq·Δeq_t
+      + β_rule·Δrule_t
+      + β_poly·Δpoly_t
+      + ε_t
+    </code>.
+    Here Δeq, Δrule and Δpoly are year-to-year changes in V-Dem’s
+    equality, rule of law, and electoral democracy indices.
+    The estimated coefficients are exported from Python as
+    <code>data/coeffs.json</code> and loaded into this page.
+    For each scenario, the simulator runs 1,000 Monte Carlo paths over
+    10 years and plots the median and 10/25/75/90&nbsp;percentile bands
+    as a fan chart.
+  </p>
+</section>
+
+
+  <script>
+  // make it none value 
+  let COEFFS = null;
+  let BASELINE = null;
+
+  // load two data files 
+  window.addEventListener('DOMContentLoaded', () => {
+    Promise.all([
+      fetch('./data/coeffs.json').then(r => r.json()),
+      fetch('./data/baseline.json').then(r => r.json())
+    ]).then(([coeffs, baseline]) => {
+      COEFFS = coeffs;
+      BASELINE = baseline;
+      init();
+    }).catch(err => {
+      console.error('Error loading data:', err);
+      alert('Failed to load coeffs/baseline JSON. Check paths.');
+    });
+  });
+
+  // fill in the country select box
+  function populateCountrySelect() {
+    const select = document.getElementById('country');
+    BASELINE.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.code;
+      opt.textContent = d.name;
+      select.appendChild(opt);
+    });
+  }
+
+  // get the starting value based on country code
+  function getStartValue(code) {
+    const rec = BASELINE.find(d => d.code === code);
+    if (!rec) return 0.5;
+    const libKey = Object.keys(rec).find(k => k.startsWith('libdem'));
+    return rec[libKey];
+  }
+
+  // to update the labels  
+  function syncLabels() {
+    const gdpEl  = document.getElementById('gdp');
+    const ineqEl = document.getElementById('ineq');
+    const ruleEl = document.getElementById('rule');
+    const polyEl = document.getElementById('poly');
+
+    document.getElementById('gdpVal').textContent =
+      Number(gdpEl.value).toFixed(1) + '%';
+
+    document.getElementById('ineqVal').textContent =
+      Number(ineqEl.value).toFixed(3);
+
+    document.getElementById('ruleVal').textContent =
+      Number(ruleEl.value).toFixed(3);
+
+    document.getElementById('polyVal').textContent =
+      Number(polyEl.value).toFixed(3);
+  }
+
+
+  const randn = (function() {
+    let z2 = null;
+    return function() {
+      if (z2 !== null) {
+        const tmp = z2;
+        z2 = null;
+        return tmp;
+      }
+      let z1 = null;
+      let u1 = 0;
+      let u2 = 0;
+      let s = 0;
+      do {
+        u1 = Math.random() * 2 - 1; // (-1, 1)
+        u2 = Math.random() * 2 - 1; // (-1, 1)
+        s = u1 * u1 + u2 * u2;
+      } while (s >= 1 || s === 0);
+      
+      const r = Math.sqrt(-2 * Math.log(s) / s);
+      z1 = u1 * r;
+      z2 = u2 * r;
+      return z1;
+    };
+  })();
+
+  function simulatePaths(start, gdp, deq, drule, dpoly, years = 10, runs = 1000) {
+    const { 
+      alpha, 
+      rho, 
+      b_gdp, 
+      b_eq, 
+      b_rule, 
+      b_poly, 
+      sigma_e  // 
+    } = COEFFS;
+
+    if (typeof sigma_e === 'undefined') {
+      console.error('Error: "sigma_e"');
+      alert('data missing');
+      return []; 
+    }
+    const deterministic_part =
+      alpha +
+      b_gdp  * gdp +
+      b_eq   * deq +
+      b_rule * drule +
+      b_poly * dpoly;
+
+    const paths = [];
+
+    for (let r = 0; r < runs; r++) {
+      let x = start;
+      const series = [{ year: 0, value: x }];
+
+      for (let t = 1; t <= years; t++) {
+        const error_term = sigma_e * randn(); 
+
+        x = rho * x + deterministic_part + error_term;
+        
+        x = Math.max(0, Math.min(1, x)); 
+
+        series.push({ year: t, value: x });
+      }
+      paths.push(series);
+    }
+  
+    return paths;
+  }
+
+  function quantilesFromPaths(paths) {
+    if (!paths || paths.length === 0) return [];
+    const years = paths[0].length;
+    const out = [];
+
+    for (let i = 0; i < years; i++) {
+      const vals = paths.map(p => p[i].value).sort((a, b) => a - b);
+
+      const q = qv => {
+        const idx = (vals.length - 1) * qv;
+        const lo = Math.floor(idx);
+        const hi = Math.ceil(idx);
+        if (lo === hi) return vals[lo];
+        return vals[lo] + (idx - lo) * (vals[hi] - vals[lo]);
+      };
+
+      out.push({
+        year: i,
+        q10: q(0.10),
+        q25: q(0.25),
+        q50: q(0.50),
+        q75: q(0.75),
+        q90: q(0.90)
+      });
+    }
+    return out;
+  }
+
+
+
+  function createChart() {
+    const svg = d3.select('#chart');
+    svg.selectAll('*').remove();
+
+    const margin = { top: 20, right: 20, bottom: 35, left: 50 };
+    const width  = +svg.attr('width')  - margin.left - margin.right;
+    const height = +svg.attr('height') - margin.top  - margin.bottom;
+
+    const g = svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleLinear().domain([0, 10]).range([0, width]);
+    const y = d3.scaleLinear().domain([0, 1]).range([height, 0]);
+
+    const xAxis = d3.axisBottom(x)
+      .ticks(10)
+      .tickFormat(d => d === 0 ? 'Now' : `+${d}`);
+    const yAxis = d3.axisLeft(y).ticks(6);
+
+    g.append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', `translate(0,${height})`)
+      .call(xAxis);
+
+    g.append('g')
+      .attr('class', 'y-axis')
+      .call(yAxis);
+
+    const area90 = d3.area()
+      .x(d => x(d.year))
+      .y0(d => y(d.q10))
+      .y1(d => y(d.q90))
+      .curve(d3.curveMonotoneX);
+
+    const area50 = d3.area()
+      .x(d => x(d.year))
+      .y0(d => y(d.q25))
+      .y1(d => y(d.q75))
+      .curve(d3.curveMonotoneX);
+
+    const lineMed = d3.line()
+      .x(d => x(d.year))
+      .y(d => y(d.q50))
+      .curve(d3.curveMonotoneX);
+
+    const band90 = g.append('path').attr('class', 'band90');
+    const band50 = g.append('path').attr('class', 'band50');
+    const median = g.append('path').attr('class', 'median');
+
+
+    return function update(qts) {
+      if (!qts || qts.length === 0) return;
+      band90.datum(qts).attr('d', area90);
+      band50.datum(qts).attr('d', area50);
+      median.datum(qts).attr('d', lineMed);
+    };
+  }
+
+
+  function render(updateChart) {
+    const code  = document.getElementById('country').value;
+    const start = getStartValue(code);
+
+    const gdp   = +document.getElementById('gdp').value;
+    const deq   = +document.getElementById('ineq').value;
+    const drule = +document.getElementById('rule').value;
+    const dpoly = +document.getElementById('poly').value;
+
+    const paths = simulatePaths(start, gdp, deq, drule, dpoly, 10, 1000);
+    const qts   = quantilesFromPaths(paths);
+
+
+
+    updateChart(qts);
+  }
+
+function init() {
+  populateCountrySelect();
+  syncLabels();
+
+  const updateChart = createChart();
+
+  document.getElementById('run').addEventListener('click', () => {
+    render(updateChart);
+  });
+
+
+  ['gdp', 'ineq', 'rule', 'poly'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      syncLabels();
+      render(updateChart); 
+    });
+  });
+
+  render(updateChart); 
+}
+</script>
+</body>
+</html>
