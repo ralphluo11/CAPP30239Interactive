@@ -41,4 +41,4 @@ A user interaction starts when the page loads. The simulator immediately fetches
 
 4. Adding More Interactivity: Should I add a "comparison mode"? For example, allowing users to "lock" one simulation's results ("high growth") and then overlay a second simulation ("low growth") or two countries projection to see the difference clearly.
 
-Visual Polish & Animation: Is it possible (and desirable) to implement more advanced animations and visual effects, similar to the smooth, narrative-driven scrolling and transitions seen on Apple's website? Would this help the user experience, or would it be distracting?
+5. Visual Polish & Animation: Is it possible (and desirable) to implement more advanced animations and visual effects, similar to the smooth, narrative-driven scrolling and transitions seen on Apple's website? Would this help the user experience, or would it be distracting?
