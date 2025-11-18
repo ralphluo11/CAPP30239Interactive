@@ -1,53 +1,44 @@
-# Jiahang Luo
+# Democracy Trajectory Simulator
 
-## Description
+Jiahang Luo
 
-I will build a Democracy Trajectory Simulator: an interactive, simulation-driven visualization that lets users explore “what-if” scenarios for a country’s democracy level over the next 10 years. Users can set assumptions about GDP per-capita growth, inequality changes, and the probability of shocks like war, then run the simulation to see a fan chart (quantiles) and compare trajectories against peer groups (neighbors, income peers). The goal is to help audiences reason about plausible ranges to connect economic and institutional assumptions to potential democratic trajectories.
+## Goal
 
-## Technical Plan
+My goal remains the same as in the proposal: to build an interactive "Democracy Trajectory Simulator." The aim is to create a simulation-driven visualization that allows users to explore "what-if" scenarios for a country's democracy level over the next 10 years.
 
-Path: Option A : The core experience is a single, centerpiece simulation with lots of options. 
+By allowing users to adjust factors like GDP growth, equality, and rule of law, the tool helps them see a plausible range of outcomes (as a fan chart). The ultimate goal is to help audiences connect economic and institutional assumptions to potential democratic trajectories. This has not changed.
 
-Libraries: D3.js for the main fan-chart (quantiles), small multiples, and transitions.
-Python for data process and fit a simple model to export coefficients
+## Data Challenges
 
-Examples:
-NYT “You Draw It” interactives
-www.nytimes.com/interactive/2015/05/28/upshot/you-draw-it-how-family-income-affects-childrens-college-chances.html
+My data challenges have shifted. I am now confident in my underlying data and model coefficients (data/coeffs.json). My main challenge is now methodological: how to accurately visualize the implications of this model.
 
-FlowingData – “A Day in the Life of Americans.
-https://flowingdata.com/2015/12/15/a-day-in-the-life-of-americans/
+The Visualization Method: My model (x_t = ρ·x_{t-1} + ... + ε_t) defines a complex probability distribution for the future. To visualize this, I am using a Monte Carlo method—running 1,000 random simulations and then drawing the quantiles (the 10-90% and 25-75% bands).
 
+The "Accuracy" of the Simulation: My core challenge is this: Is this simulation method accurate?
 
+The fan chart's shape is entirely dependent on these 1,000 paths. If I ran the simulation again, would the chart look slightly different? (It would, due to randomness). Is 1,000 paths the "right" number? Would 10,000 paths give a more "accurate" picture of the model's true probabilities? Would 100 paths be too few and too random?
 
-## Mockup
+Communicating the Method vs. the Model: I am confident in my model's coefficients, but I am uncertain how to justify or validate the simulation method that I'm using to present those coefficients to the user. The challenge is ensuring the visualization (the fan chart) is a faithful and stable representation of the underlying mathematical model.
 
-<img width="1126" height="582" alt="image" src="https://github.com/user-attachments/assets/d9f6efb1-488b-4dfa-908f-54a68eb196e4" />
+## Walk Through
 
-## Data Sources
+A user interaction starts when the page loads. The simulator immediately fetches the data and runs a default simulation.
 
-### Data Source 1: V-Dem
-
-URL: https://v-dem.net/data/the-v-dem-dataset/
-
-Size: 27913 rows, 4607 columns
-
-The V-Dem dataset is a global country–year panel containing multiple headline democracy indices (for example, v2x_libdem for liberal democracy and v2x_polyarchy for electoral democracy) plus dozens of component indicators such as participation, civil liberties, and judicial constraints. I downloaded the CSV, examined the headers and a random sample of rows to verify the expected variables and check for missing values. To maintain a temporally consistent panel and avoid country name changes and reduce irregular gaps, I restricted the project to the 1995–2024 slice, which yields a complete and stable dataset for the visualization. 
-
-
-### Data Source 2: World Bank Economics growth
-
-URL: https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?end=2024&start=2024&view=map
-
-Size: 266 rows, 70 columns
-
-The World Bank GDP growth indicator reports the annual percent change in GDP at market prices (constant prices); I checked the number of missing observations and inspected their corresponding time ranges to assess the series’ coverage for the country–year analysis.
+1.  **Initial View:** The user sees the main fan chart, a set of controls (Country select, four sliders), and a legend at the bottom.
+2.  **Controls:** The user can first select a **Country** from the dropdown menu. This sets the `start` value (the democracy index at "Now") for the simulation.
+3.  **Simulation:** The user then adjusts the sliders for **"GDP growth"**, **"Equality change"**, **"Rule of law change"**, and **"Freedom of expression change"**.
+4.  **Real-time Feedback:** As the user drags any slider (on an `input` event), the JavaScript instantly calls the `render()` function. This re-runs the `simulatePaths()` function (with 1,000 Monte Carlo paths) and recalculates the new quantiles (10-90% and 25-75%) and the median path.
+5.  **Visualization Update:** The D3.js chart updates in real-time. The new quantile data is bound to the `.band90`, `.band50`, and `.median` paths, and the `d` attribute is redrawn. The user can visually see how their assumptions (e.g., increasing "Rule of law") cause the entire fan chart to trend upwards.
 
 
 ## Questions
 
-{Numbered list of questions for course staff, if any.}
+1. Communicating the Model: I am currently showing the model's formula in the "How this prototype works" section. Given that I'm confident in the coeffs, is this the right way to show it?
 
-1.  For a public-facing explorable, should I tell them how the model works and which is the one I choose?
-2.  Is there any other way I can add more interactivity into this?
-3.
+2. Communicating the Simulation Method: How do I justify the Monte Carlo method to the user? Should I tell them, "The colored bands are the result of 1,000 random simulations"? Does this build trust (by showing the method is robust) or reduce it (by revealing it's an approximation, not a perfect mathematical calculation)?
+
+3. Accuracy of the Simulation: How do I, the developer, validate that 1,000 paths is "accurate enough"? Is there a risk that the fan chart is misleading simply because the number of runs is too low?
+
+4. Adding More Interactivity: Should I add a "comparison mode"? For example, allowing users to "lock" one simulation's results ("high growth") and then overlay a second simulation ("low growth") or two countries projection to see the difference clearly.
+
+Visual Polish & Animation: Is it possible (and desirable) to implement more advanced animations and visual effects, similar to the smooth, narrative-driven scrolling and transitions seen on Apple's website? Would this help the user experience, or would it be distracting?
