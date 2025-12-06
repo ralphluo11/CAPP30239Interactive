@@ -232,7 +232,8 @@ select:focus {
 input[type="range"] {
   width: 100%;
   margin-top: 5px;
-  -webkit-appearance: slider-horizontal; 
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .actions-group {
