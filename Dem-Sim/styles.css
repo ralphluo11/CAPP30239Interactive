@@ -9,20 +9,16 @@
 body {
   margin: 0;
   padding: 0;
-  /* Dark background color from the template */
   background-color: #313a3d; 
-  /* Uncomment the line below if you have the template images */
   /* background-image: url("images/overlay.png"), url("images/bg.jpg"); */
   background-size: auto, cover;
   background-attachment: fixed;
   
-  /* Core typography settings */
   font-family: "Raleway", "Helvetica", sans-serif;
   color: #6f7577; 
   font-size: 15pt;
   line-height: 1.75em;
   
-  /* Center content vertically and horizontally */
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -37,10 +33,10 @@ body {
 .container {
   max-width: 960px;
   width: 90%; 
-  background-color: rgba(252, 252, 252, 0.95); /* Slight transparency */
+  background-color: rgba(252, 252, 252, 0.95);
   padding: 50px;
   border-radius: 8px; 
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3); /* Deep shadow for depth */
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
 /* =========================================
@@ -57,11 +53,10 @@ h1, h2, h3 {
 
 h1 { font-size: 2.2em; }
 
-/* Subtitle under H1 */
 .sub {
   text-align: center;
   font-size: 0.9em;
-  color: #1b98c5; /* Accent blue */
+  color: #1b98c5;
   margin-bottom: 40px;
   border-bottom: 2px solid #dddddd;
   display: inline-block;
@@ -76,40 +71,37 @@ h1 { font-size: 2.2em; }
   background-color: #ffffff;
   border: 2px solid #efefef;
   border-radius: 10px;
-  padding: 40px; /* Generous padding */
+  padding: 40px;
   margin-bottom: 40px;
 }
 
-/* --- Intro Section --- */
 .guide-intro {
   margin-bottom: 30px;
   text-align: left;
 }
 .guide-intro h3 {
-  font-size: 1.4em;
+  font-size: 1.5em;
   color: #61686b;
   margin-bottom: 10px;
-  text-transform: none; /* Friendly, normal case */
+  text-transform: none;
   text-align: left;
   letter-spacing: normal;
 }
 .guide-intro p {
   color: #888;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
   margin-bottom: 0;
 }
 
-/* --- Step Container (Vertical Stack) --- */
 .guide-step {
   display: flex;
   align-items: flex-start;
   margin-bottom: 30px;
 }
 
-/* --- Step Badge (Circle Number) --- */
 .step-badge {
-  background-color: #8cd1a8; /* Template green */
+  background-color: #8cd1a8;
   color: #fff;
   width: 32px;
   height: 32px;
@@ -122,40 +114,36 @@ h1 { font-size: 2.2em; }
   margin-right: 20px;
   flex-shrink: 0;
   margin-top: 0px; 
-  box-shadow: 0 4px 10px rgba(140, 209, 168, 0.4); /* Soft glow */
+  box-shadow: 0 4px 10px rgba(140, 209, 168, 0.4);
 }
 
-/* --- Step Content --- */
 .step-content {
   flex-grow: 1;
 }
 .step-content label {
   display: block;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   color: #61686b;
   margin-bottom: 10px;
 }
 .step-hint {
-  font-size: 0.85rem;
-  color: #3347c9; /* Helper text color */
+  font-size: 1.1rem;
+  color: #3347c9;
   margin-top: 8px;
   margin-bottom: 0;
   font-style: italic;
 }
 
-/* --- Custom Native Select (Modern Clean Style) --- */
 select {
-  /* 1. Remove default browser appearance */
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 
-  /* 2. Dimensions & Fonts */
   width: 100%;
-  max-width: 400px; /* Limit width for aesthetics */
+  max-width: 400px;
   padding: 12px 15px;
-  padding-right: 40px; /* Space for custom arrow */
+  padding-right: 40px;
   
   font-family: inherit;
   font-size: 1rem;
@@ -163,13 +151,11 @@ select {
   color: #444;
   line-height: 1.3;
 
-  /* 3. Background & Border */
   background-color: #ffffff;
-  border: 1px solid #d1d5db; /* Light gray border */
-  border-radius: 8px;        /* Soft rounded corners */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   
-  /* 4. Custom SVG Arrow (Encoded) */
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 15px center;
@@ -179,20 +165,17 @@ select {
   transition: all 0.2s ease;
 }
 
-/* Select Hover State */
 select:hover {
-  border-color: #8cd1a8; /* Template green border */
+  border-color: #8cd1a8;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
 }
 
-/* Select Focus State */
 select:focus {
   outline: none;
   border-color: #8cd1a8;
-  box-shadow: 0 0 0 3px rgba(140, 209, 168, 0.2); /* Green glow */
+  box-shadow: 0 0 0 3px rgba(140, 209, 168, 0.2);
 }
 
-/* --- Preset Scenario Buttons --- */
 .scenario-btns {
   display: flex;
   flex-wrap: wrap;
@@ -217,14 +200,12 @@ select:focus {
   color: white;
 }
 
-/* --- Divider Line --- */
 .divider {
   border: 0;
   border-top: 1px solid #eee;
   margin: 30px 0;
 }
 
-/* --- Sliders Grid (2x2 Layout) --- */
 .sliders-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -234,13 +215,13 @@ select:focus {
 .slider-header {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9em;
+  font-size: 1.1em;
   font-weight: 700;
   margin-bottom: 5px;
   color: #61686b;
 }
 .val-display { 
-  color: #8cd1a8; /* Highlight value in green */
+  color: #8cd1a8;
   font-weight: 800;
 } 
 .slider-sub { 
@@ -248,21 +229,18 @@ select:focus {
   color: #bbb; 
 }
 
-/* Fix for native range input appearance */
 input[type="range"] {
   width: 100%;
   margin-top: 5px;
   -webkit-appearance: slider-horizontal; 
 }
 
-/* --- Action Buttons (Bottom) --- */
 .actions-group {
   display: flex;
   justify-content: flex-end;
   gap: 15px;
 }
 
-/* Primary Button (Run) */
 .primary-btn {
   background-color: #8cd1a8;
   color: white;
@@ -278,7 +256,6 @@ input[type="range"] {
 }
 .primary-btn:hover { background-color: #9ed8b6; }
 
-/* Secondary Button (Lock) */
 .secondary-btn {
   background-color: #f4f4f4;
   color: #666;
@@ -295,7 +272,7 @@ input[type="range"] {
 .secondary-btn:hover { background-color: #e2e6ea; }
 .secondary-btn.active {
   background-color: #fff1f0;
-  color: #d63031; /* Red for active/unlock state */
+  color: #d63031;
   border-color: #ffcccc;
 }
 
@@ -308,29 +285,48 @@ input[type="range"] {
 }
 #chart-title {
   margin-bottom: 15px;
-  font-size: 1.3em;
+  font-size: 1.5em;
   color: #333;
-  text-transform: none; /* Keep natural case */
+  text-transform: none;
 }
 
-/* --- D3 Chart Colors --- */
-.band90 { fill: #f1e20a; fill-opacity: 0.7; stroke: none; }
-.band50 { fill: #3ac621; fill-opacity: 0.7; stroke: none; }
-.median { fill: none; stroke: #08519c; stroke-width: 3px; }
+.band90 { fill: #fec44f; fill-opacity: 0.5; stroke: none; }
+.band50 { fill: #fa9fb5; fill-opacity: 0.7; stroke: none; }
+.median { fill: none; stroke: #88419d; stroke-width: 3px; }
 
-/* --- Comparison Mode (Ghost Layer) --- */
 .locked-layer { opacity: 0.5; pointer-events: none; }
 .locked-band90 { fill: #d1d1d1; stroke: none; }
 .locked-band50 { fill: #b0b0b0; stroke: none; }
 .locked-median { fill: none; stroke: #666; stroke-width: 2px; stroke-dasharray: 6, 4; }
 
-/* --- Legend --- */
 .legend { margin-top: 20px; font-size: 0.85em; }
 .legend span { margin: 0 15px; position: relative; padding-left: 20px; color: #666; }
-/* Color blocks for legend */
-.legend .band90::before { content:""; background:#f1e20a; width:12px; height:12px; position:absolute; left:0; top:3px; }
-.legend .band50::before { content:""; background:#3ac621; width:12px; height:12px; position:absolute; left:0; top:3px; }
-.legend .median::before { content:""; background:#08519c; width:12px; height:3px; position:absolute; left:0; top:8px; }
+
+.legend .band90::before { content:""; background:#fec44f; width:12px; height:12px; position:absolute; left:0; top:3px; }
+.legend .band50::before { content:""; background:#fa9fb5; width:12px; height:12px; position:absolute; left:0; top:3px; }
+.legend .median::before { content:""; background:#88419d; width:12px; height:3px; position:absolute; left:0; top:8px; }
+
+/* Axis styles */
+.x-axis text,
+.y-axis text {
+  font-size: 15px;              
+  font-family: "Raleway", sans-serif;
+  fill: #777;                   
+}
+
+.x-axis path,
+.x-axis line,
+.y-axis path,
+.y-axis line {
+  stroke: #ccc;                
+  stroke-width: 1.5px;          
+}
+
+.axis-label {
+  fill: #666;
+  font-size: 15px;
+  font-family: "Raleway", sans-serif;
+}
 
 /* =========================================
    7. Methodology Section
@@ -340,14 +336,13 @@ input[type="range"] {
   font-size: 0.85em;
   color: #888;
   border-top: 1px solid #eee;
-  padding-top: 30px;
+  padding-top: 20px;
   text-align: left;
 }
 .methods h2 {
   text-align: left;
   font-size: 1.2em;
   margin-bottom: 15px;
-  text-transform: none;
 }
 code {
   background: #f4f4f4;
@@ -362,7 +357,6 @@ code {
    8. Dynamic UI Elements
    ========================================= */
 
-/* --- Comparison Info Tag (Under Title) --- */
 .chart-subtitle {
   font-size: 0.9rem;       
   color: #4b4e4d;          
@@ -372,7 +366,7 @@ code {
   border-radius: 6px;      
   display: inline-block;   
   border: 1px solid #e1e4e8;
-  font-family: monospace;  /* Monospace for readable data */
+  font-family: monospace;
 }
 
 .chart-subtitle strong {
@@ -380,10 +374,9 @@ code {
   font-weight: 800;
 }
 
-/* --- Lock Button Hint Text --- */
 .lock-hint {
-  font-size: 0.95rem;
-  color: #d40d52; /* Accent color for hint */
+  font-size: 1.1rem;
+  color: #d40d52;
   font-style: italic;
   margin-right: 15px;      
   align-self: center;      
@@ -396,13 +389,8 @@ code {
    9. References Section Styles
    ========================================= */
 
-#references .container {
-  margin-top: 30px; 
-}
-
-/* Reference List Styles */
 .ref-list {
-  list-style: none; /* No bullets */
+  list-style: none;
   padding: 0;
   margin: 0;
   text-align: left; 
@@ -414,14 +402,13 @@ code {
   margin-top: 20px;
   margin-bottom: 15px;
   padding-left: 15px;
-  border-left: 3px solid #e0e0e0; /* Vertical bar decoration */
+  border-left: 3px solid #e0e0e0;
   line-height: 1.5;
   transition: all 0.2s ease;
 }
 
-/* Highlight vertical bar on hover */
 .ref-list li:hover {
-  border-left-color: #8cd1a8; /* Template green */
+  border-left-color: #8cd1a8;
   color: #333;
 }
 
@@ -436,7 +423,7 @@ code {
 }
 
 .ref-list a {
-  color: #6ab086; /* Link color */
+  color: #6ab086;
   text-decoration: none;
   margin-left: 5px;
   font-size: 0.85em;
@@ -450,7 +437,6 @@ code {
    10. Spacing Overrides (High Specificity)
    ========================================= */
 
-/* Adjust headings in Methods and References */
 .container .methods h2, 
 .container #references h2 {
   margin-top: 0 !important;        
@@ -461,16 +447,79 @@ code {
   letter-spacing: normal !important; 
 }
 
-/* Adjust section containers */
 .container .methods, 
 .container #references {
   margin-top: 50px !important;     
   padding-top: 0 !important;    
 }
 
-/* Fix paragraph spacing */
 .container .methods p, 
 .container .ref-list {
   margin-top: 0 !important;
   padding-top: 0 !important;
+}
+
+/* Locked Scenario Legend Item */
+.legend .locked-legend {
+  margin-left: 25px;
+  position: relative;
+  padding-left: 20px;
+  color: #888;
+  font-style: italic;
+}
+
+.legend .locked-legend::before {
+  content: "";
+  background-color: #d1d1d1;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  left: 0;
+  top: 3px;
+  border: 1px dashed #999; 
+}
+
+.chart-caption {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #8cd1a8;
+  border-radius: 6px;
+  text-align: left;
+  font-family: "Raleway", sans-serif;
+}
+
+.chart-caption h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  color: #333;
+  text-transform: none;
+  letter-spacing: normal;
+  display: flex;
+  margin-left: -4px;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-caption h4 i {
+  color: #8cd1a8;
+}
+
+.chart-caption p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.chart-caption strong {
+  font-weight: 700;
+}
+
+.chart-caption em {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #888;
+  font-style: italic;
 }
