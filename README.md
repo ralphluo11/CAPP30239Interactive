@@ -1,5 +1,5 @@
 # Democracy Trajectory Simulator
-
+### Jiahang Luo
 ## Description
 
 This project is an interactive "Democracy Trajectory Simulator" that allows users to explore "what-if" scenarios for a country's political future. By adjusting key assumptions—specifically GDP growth, equality, rule of law, and freedom of expression—users can simulate plausible ranges for the V-Dem Liberal Democracy Index over the next 10 years.
