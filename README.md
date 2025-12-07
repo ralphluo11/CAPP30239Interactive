@@ -6,7 +6,8 @@ This project is an interactive "Democracy Trajectory Simulator" that allows user
 
 The visualization uses a dynamic panel model and Monte Carlo simulations (1,000 runs) to generate a fan chart, visually representing the uncertainty of the predictions. Key features include a "Comparison Mode" to overlay different scenarios and historical presets (such as a "US New Deal" or "China Economic Miracle") to help users contextualize the data.
 
-<img width="1126" height="582" alt="image" src="https://github.com/user-attachments/assets/d9f6efb1-488b-4dfa-908f-54a68eb196e4" />
+<img width="778" height="1474" alt="final" src="https://github.com/user-attachments/assets/11886583-49e2-4823-9823-26e0c585ce14" />
+
 
 ## Data Sources
 
