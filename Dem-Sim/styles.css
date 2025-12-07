@@ -1,16 +1,11 @@
-/* =========================================
-   1. Typography & Fonts
-   ========================================= */
+/* ai told me about the import font line */ 
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,400italic,700,800");
 
-/* =========================================
-   2. Global Background (Highlights Template)
-   ========================================= */
+/*background setting*/ 
 body {
   margin: 0;
   padding: 0;
   background-color: #313a3d; 
-  /* background-image: url("images/overlay.png"), url("images/bg.jpg"); */
   background-size: auto, cover;
   background-attachment: fixed;
   
@@ -27,9 +22,7 @@ body {
   padding-bottom: 40px;
 }
 
-/* =========================================
-   3. Main Container (Card Style)
-   ========================================= */
+/* Main Container (Card Style)*/
 .container {
   max-width: 960px;
   width: 90%; 
@@ -39,9 +32,7 @@ body {
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
-/* =========================================
-   4. Headings & Typography
-   ========================================= */
+/*Headings & Typography*/
 h1, h2, h3 {
   color: #61686b;
   font-weight: 800;
@@ -64,9 +55,7 @@ h1 { font-size: 2.2em; }
   width: 100%;
 }
 
-/* =========================================
-   5. Control Panel (Step-by-Step Guide Layout)
-   ========================================= */
+/* Control Panel AI helped with the color choice */
 .controls {
   background-color: #ffffff;
   border: 2px solid #efefef;
@@ -232,8 +221,6 @@ select:focus {
 input[type="range"] {
   width: 100%;
   margin-top: 5px;
-  -webkit-appearance: none;
-  appearance: none;
 }
 
 .actions-group {
@@ -277,9 +264,7 @@ input[type="range"] {
   border-color: #ffcccc;
 }
 
-/* =========================================
-   6. Chart Area Visualization
-   ========================================= */
+/* Chart Area Visualization */
 .chart-wrap {
   text-align: center;
   margin-bottom: 40px;
@@ -290,7 +275,7 @@ input[type="range"] {
   color: #333;
   text-transform: none;
 }
-
+/* ai explain the each factor meaning to help me decide */
 .band90 { fill: #fec44f; fill-opacity: 0.5; stroke: none; }
 .band50 { fill: #fa9fb5; fill-opacity: 0.7; stroke: none; }
 .median { fill: none; stroke: #88419d; stroke-width: 3px; }
@@ -329,9 +314,7 @@ input[type="range"] {
   font-family: "Raleway", sans-serif;
 }
 
-/* =========================================
-   7. Methodology Section
-   ========================================= */
+/* Methodology Section */
 .methods {
   margin-top: 60px;
   font-size: 0.85em;
@@ -354,9 +337,7 @@ code {
   border: 1px solid #eee;
 }
 
-/* =========================================
-   8. Dynamic UI Elements
-   ========================================= */
+/* Dynamic UI Elements */
 
 .chart-subtitle {
   font-size: 0.9rem;       
@@ -386,9 +367,7 @@ code {
   gap: 5px;
 }
 
-/* =========================================
-   9. References Section Styles
-   ========================================= */
+/* References Section Styles */
 
 .ref-list {
   list-style: none;
@@ -434,9 +413,7 @@ code {
   text-decoration: underline;
 }
 
-/* =========================================
-   10. Spacing Overrides (High Specificity)
-   ========================================= */
+/* Spacing Overrides */
 
 .container .methods h2, 
 .container #references h2 {
@@ -522,5 +499,11 @@ code {
   margin-top: 8px;
   font-size: 0.85rem;
   color: #888;
+  font-style: italic;
+}
+.slider-global-hint {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #777;
   font-style: italic;
 }

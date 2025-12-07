@@ -16,8 +16,6 @@
   precise forecast, but a way to see plausible ranges and compare
   different scenarios.
     </p>
-    <p class ='Intro'>
-    </p>
   </header>
 
     <!-- factors -->
@@ -49,7 +47,7 @@
     <div class="step-content">
       <label>Apply a "What-If" Scenario (Optional)</label>
       <div class="scenario-btns">
-        <button class="preset-btn" onclick="applyScenario('mccarthyism')">US McCarthyism</button>
+        <button class="preset-btn" onclick="applyScenario('mccarthyism')">US McCarthyism</button>  <!-- AI told me to hook this button up with the linked function -->
         <button class="preset-btn" onclick="applyScenario('new_deal')">US New Deal</button>
         <button class="preset-btn" onclick="applyScenario('high_growth')">China Econ Miracle</button>
       </div>
@@ -59,12 +57,18 @@
 
   <hr class="divider">
 
-    <div class="sliders-grid"> <label class="slider-item">
+  <p class="slider-global-hint">
+  For all sliders, moving <strong>right</strong> means improving conditions
+  (higher growth, stronger rule of law, more freedom), and moving
+  <strong>left</strong> means deterioration relative to today.
+  </p>
+
+    <div class="sliders-grid"> <label class="slider-item"> <!--Ai helped me with the custimization of sliders-->
         <div class="slider-header">
           <span>GDP growth</span>
           <span id="gdpVal" class="val-display">2.0%</span>
         </div>
-        <input id="gdp" type="range" min="-3" max="8" step="0.5" value="2" />
+        <input id="gdp" type="range" min="-3" max="8" step="0.5" value="2" /> 
       </label>
 
       <label class="slider-item">
@@ -104,7 +108,7 @@
 
   <!-- chart -->
   <section class="chart-wrap">
-    <h3 id="chart-title";">Loading...</h3>
+    <h3 id="chart-title">Loading...</h3>
       Simulated level of democracy over the next 10 years 
     <svg id="chart" width="920" height="400"
          role="img"
@@ -121,7 +125,7 @@
       <p>
         The vertical axis shows the democracy score from <strong>0 (Authoritarian)</strong> to <strong>1 (Liberal Democracy)</strong>.
         <br><br>
-        This chart displays the result of <strong>1,000 simulations</strong>. 
+        This chart displays the result of <strong>1,000 simulations</strong>.    <!-- ai helped me with the color to make it more visually powerful -->
         The <strong style="color:#88419d">Purple Line</strong> represents the median (most central) outcome. 
         The <strong style="color:#fa9fb5">Pink Band</strong> captures the middle 50% of possibilities, while the wider 
         <strong style="color:#fec44f">Orange Band</strong> covers 80% of all potential trajectories.
@@ -155,7 +159,6 @@
   </p>
 </section>
 
-</section> 
 
 <section id="references" class="main">
   <div class="container">
@@ -184,7 +187,7 @@
   </div>
 
   <script>
-  // make it none value 
+  // make it none value to start
   let COEFFS = null;
   let BASELINE = null;
   let LOCKED_DATA = null;
@@ -205,7 +208,7 @@
     });
   });
 
-  // fill in the country select box
+  // country select options
   function populateCountrySelect() {
     const select = document.getElementById('country');
     BASELINE.forEach(d => {
@@ -243,6 +246,7 @@
     document.getElementById('polyVal').textContent =
       Number(polyEl.value).toFixed(3);
   }
+  // preset scenarios data are suggested by AI 
   const SCENARIOS = {
       'mccarthyism': {
         code: 'USA', 
@@ -394,7 +398,7 @@
     const svg = d3.select('#chart');
     svg.selectAll('*').remove();
 
-    // 1. 自动计算宽高 (保持你之前的逻辑)
+    // set size 
     const container = d3.select('.chart-wrap').node();
     const styles = window.getComputedStyle(container);
     const paddingLeft = parseFloat(styles.paddingLeft);
@@ -411,7 +415,7 @@
 
     const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // 2. 坐标轴
+    // set axis 
     const x = d3.scaleLinear().domain([0, 10]).range([0, width]);
     const y = d3.scaleLinear().domain([0, 1]).range([height, 0]);
 
@@ -436,45 +440,36 @@
       .attr("text-anchor", "middle")
       .text("Democracy index (0–1)");
 
-    // 3. 定义画线/画面的工具
+    
     const area90 = d3.area().x(d => x(d.year)).y0(d => y(d.q10)).y1(d => y(d.q90)).curve(d3.curveMonotoneX);
     const area50 = d3.area().x(d => x(d.year)).y0(d => y(d.q25)).y1(d => y(d.q75)).curve(d3.curveMonotoneX);
     const lineMed = d3.line().x(d => x(d.year)).y(d => y(d.q50)).curve(d3.curveMonotoneX);
 
-    // ======================================================
-    // 【关键】创建两个图层
-    // ======================================================
-    
-    // Layer 1: 幽灵层 (放在下面，先画)
+    // Layer 1 locked layer the logic is inspired by ai 
     const lockedGroup = g.append('g').attr('class', 'locked-layer');
-    // 我们给幽灵层也画这三个东西，但是用不同的 class (灰色)
+  
     const lockBand90 = lockedGroup.append('path').attr('class', 'locked-band90');
     const lockBand50 = lockedGroup.append('path').attr('class', 'locked-band50');
     const lockMedian = lockedGroup.append('path').attr('class', 'locked-median');
 
-    // Layer 2: 激活层 (放在上面，后画，彩色的)
     const activeGroup = g.append('g').attr('class', 'active-layer');
     const actBand90 = activeGroup.append('path').attr('class', 'band90');
     const actBand50 = activeGroup.append('path').attr('class', 'band50');
     const actMedian = activeGroup.append('path').attr('class', 'median');
 
-    // Update 函数：现在接收两个参数
     return function update(currentData, lockedData) {
-      // 1. 画当前的 (彩色)
+
       if (currentData) {
         actBand90.datum(currentData).attr('d', area90);
         actBand50.datum(currentData).attr('d', area50);
         actMedian.datum(currentData).attr('d', lineMed);
       }
 
-      // 2. 画锁定的 (灰色)
       if (lockedData) {
-        // 如果有锁定数据，就显示出来
         lockBand90.datum(lockedData).attr('d', area90).style('display', 'block');
         lockBand50.datum(lockedData).attr('d', area50).style('display', 'block');
         lockMedian.datum(lockedData).attr('d', lineMed).style('display', 'block');
       } else {
-        // 如果没有，就隐藏
         lockBand90.style('display', 'none');
         lockBand50.style('display', 'none');
         lockMedian.style('display', 'none');
@@ -486,12 +481,10 @@ function render(updateChart) {
     const selectEl = document.getElementById('country');
     const countryName = selectEl.options[selectEl.selectedIndex].text;
     
-    // 获取标题元素
+    
     const titleEl = document.getElementById('chart-title');
     
     if (LOCKED_DATA && LOCKED_META) {
-        // 【新增】构建详细的对比文字
-        // 为了排版好看，我们用 <small> 标签把参数变小一点，换行显示
         const meta = LOCKED_META; 
         const infoText = `Details: GDP ${meta.gdp}%, Equality ${meta.ineq}, Rule of law ${meta.rule}, Freedom of expression ${meta.poly}`;
         
@@ -502,7 +495,6 @@ function render(updateChart) {
           </div>
         `;
     } else {
-        // 正常状态
         titleEl.textContent = `Current Simulation: ${countryName}`;
     }
 
@@ -512,11 +504,9 @@ function render(updateChart) {
     const drule = +document.getElementById('rule').value;
     const dpoly = +document.getElementById('poly').value;
     
-    // 模拟计算
     const paths = simulatePaths(start, gdp, deq, drule, dpoly, 10, 1000);
     const currentData = quantilesFromPaths(paths);
 
-    // 把当前数据 和 锁定数据 同时传给画图函数
     updateChart(currentData, LOCKED_DATA);
 
     return currentData;
@@ -527,15 +517,12 @@ function render(updateChart) {
     syncLabels();
     const updateChart = createChart();
 
-    // 运行一次，并保存结果
     let lastResult = render(updateChart);
 
-    // 绑定 Run 按钮
     document.getElementById('run').addEventListener('click', () => {
       lastResult = render(updateChart);
     });
 
-    // 绑定 Sliders (实时更新)
     ['gdp', 'ineq', 'rule', 'poly'].forEach(id => {
       document.getElementById(id).addEventListener('input', () => {
         syncLabels();
@@ -543,15 +530,13 @@ function render(updateChart) {
       });
     });
 
-// 【修改】绑定 Lock 按钮
+    // to show locked data 
     const lockBtn = document.getElementById('lockBtn');
     lockBtn.addEventListener('click', () => {
         if (LOCKED_DATA === null) {
-            // 1. 锁定数据 (画图用)
+
             LOCKED_DATA = JSON.parse(JSON.stringify(lastResult));
             
-            // 2. 【新增】锁定参数信息 (显示文字用)
-            // 我们把此刻屏幕上的值都记下来
             const selectEl = document.getElementById('country');
             LOCKED_META = {
                 country: selectEl.options[selectEl.selectedIndex].text,
@@ -564,9 +549,8 @@ function render(updateChart) {
             lockBtn.textContent = "Unlock";
             lockBtn.classList.add('active'); 
         } else {
-            // 解锁
             LOCKED_DATA = null;
-            LOCKED_META = null; // 【新增】清空信息
+            LOCKED_META = null; 
             
             lockBtn.textContent = "Lock";
             lockBtn.classList.remove('active'); 
