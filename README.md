@@ -2,7 +2,7 @@
 ### Jiahang Luo
 ## Description
 
-This project is an interactive "Democracy Trajectory Simulator" that allows users to explore "what-if" scenarios for a country's political future. By adjusting key assumptions—specifically GDP growth, equality, rule of law, and freedom of expression—users can simulate plausible ranges for the V-Dem Liberal Democracy Index over the next 10 years.
+This project is an interactive "Democracy Trajectory Simulator" that allows users to explore "what-if" scenarios for a country's political future. By adjusting key assumptions, specifically GDP growth, equality, rule of law, and freedom of expression, users can simulate plausible ranges for the level of democracy over the next 10 years.
 
 The visualization uses a dynamic panel model and Monte Carlo simulations (1,000 runs) to generate a fan chart, visually representing the uncertainty of the predictions. Key features include a "Comparison Mode" to overlay different scenarios and historical presets (such as a "US New Deal" or "China Economic Miracle") to help users contextualize the data.
 
